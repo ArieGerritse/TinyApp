@@ -18,6 +18,16 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
+app.post("/urls", (req, res) => {
+  let randomString = generateRandomString();
+  var linkName = "Go to your link!";
+  urlDatabase[randomString] = req.body.longURL;
+  console.log(req.IncomingMessage);
+  // res.redirect('http://localhost:8080/urls')
+  // res.send(linkName.link(urlDatabase[randomString]));
+
+});
+
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
@@ -41,7 +51,26 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-app.get("/urls/:id", (req, res) => {
+app.post("/urls/:id/delete", (req, res) => {
+  if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
+    delete urlDatabase[req.params.id];
+
+    res.redirect('http://localhost:8080/urls');
+  } else {
+    res.redirect('http://localhost:8080/urls');
+  }
+});
+
+app.post("/urls/:id/update", (req, res) => {
+  if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
+    urlDatabase[req.params.id] = req.body.longURL;
+    res.redirect('http://localhost:8080/urls');
+  } else {
+    res.redirect('http://localhost:8080/urls');
+  }
+});
+
+app.post("/urls/:id", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
     shortURL: req.params.id
@@ -49,14 +78,13 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-app.post("/urls", (req, res) => {
-  console.log(req.body); // debug statement to see POST parameters
-  res.send(generateRandomString()); // Respond with 'Ok' (we will replace this)
-});
+app.get("/u/:shortURL", (req, res) => {
+  if (Object.keys(urlDatabase).indexOf(req.params.shortURL) > -1) {
+    res.redirect(urlDatabase[req.params.shortURL]);
+  } else {
+    res.redirect('http://localhost:8080/urls/new');
+  }
 
-
-app.on('error', function(err) { // Note 2
-  throw err;
 });
 
 function generateRandomString() {
@@ -68,3 +96,5 @@ function generateRandomString() {
 
   return text;
 }
+
+//<%='/urls/' + x + '/delete'%>

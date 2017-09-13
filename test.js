@@ -1,11 +1,13 @@
-function makeid() {
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+var obj = {
+  name: '12312321',
+  name2: '12312321',
+  name3: '21321',
+  name4: '21312321'
+};
 
-  for (var i = 0; i < 6; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+var a = 'name5';
+var b = Object.keys(obj).indexOf(a);
 
-  return text;
-}
+console.log(b);
 
-console.log(makeid());
+// console.log(Object.keys(obj)[3]);

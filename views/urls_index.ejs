@@ -15,8 +15,17 @@
       <ul>
         <% for(x in urls){%>
           <li>
-            <%= x + ' ' + urls[x] %>
+            <%= `${x} ${urls[x]}` %>
           </li>
+          <br>
+          <form method="POST" action=<%='/urls/' + x + '/delete'%>>
+            <button class="button " style="vertical-align:middle "><span>Delete </span></button>
+          </form>
+          <br>
+          <form method="POST" action=<%='/urls/' + x%>>
+            <button class="button " style=display:inline><span>Update </span></button>
+          </form>
+          <br>
           <%};%>
       </ul>
     </div>
