@@ -15,7 +15,8 @@
       <ul>
         <% for(x in urls){%>
           <li>
-            <%= `${x} ${urls[x]}` %>
+            <%= `${x} ` %>
+              <a href=<%=urls[x]%>><%=urls[x]%></a>
           </li>
           <br>
           <form method="POST" action=<%='/urls/' + x + '/delete'%>>
@@ -30,7 +31,6 @@
       </ul>
     </div>
   </main>
-  <!-- Add your EJS code here -->
 </body>
 
 </html>
