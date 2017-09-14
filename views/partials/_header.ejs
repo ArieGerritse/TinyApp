@@ -1,13 +1,18 @@
 <!-- views/partials/_headers.ejs -->
-<% if(username !== undefined){%>
-  <br>
-  <form method="POST" action=/logout>
-    <button class="button "><span>Logout </span></button>
-  </form> <b><%=username + ' has been logged in!'%></b>
+<% if(user_id === undefined){%>
+  <span>
+<br>
+<form action="/login" method="POST" style="display:inline;">
+  <input type="submit" value="Login">
+</form>
+<form action="/register" method="POST" style="display:inline;">
+  <input type="submit" value="Register">
+</form>
+<br>
+</span>
   <%}else{%>
-    <form action="/login" method="POST" style="margin:30px;">
-      <label for="username">Enter your Username:</label>
-      <input id="username" type="text" name="username" placeholder="Username" style="width: 200px">
-      <input type="submit" value="Submit">
-    </form>
+    <br>
+    <form method="POST" action=/logout>
+      <button class="button "><span>Logout </span></button>
+    </form> <b><%=user_id + ' has been logged in!'%></b>
     <%};%>
