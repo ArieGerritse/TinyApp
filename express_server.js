@@ -54,7 +54,8 @@ const users = {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
+///////////////////////////////////////////////////////////// DONE
+//Base of tiny app, if logged in redirects to /urls, if not redirects to /login
 app.get("/", (req, res) => {
   if (req.session.user_id === undefined) {
     res.redirect('/login');
@@ -62,7 +63,7 @@ app.get("/", (req, res) => {
     res.redirect('/urls');
   }
 });
-
+///////////////////////////////////////////// DONE?!
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
@@ -71,6 +72,7 @@ app.get("/urls", (req, res) => {
   };
   res.render("urls_index", templateVars);
 });
+////////////////////////////////// Needs a redirect if logged in, and split into GET AND POST
 app.post("/login", (req, res) => {
   let tempVars = {
     response: ''
@@ -104,16 +106,21 @@ app.post("/login", (req, res) => {
     res.render("urls_login", tempVars);
   }
 });
-
+//////////////////////////////////////////// DONE
+//Logout function, deletes user_id cookie (not all in case i want to do the
+//stetch goals) and redirects to /urls
 app.post("/logout", (req, res) => {
   req.session.user_id = undefined;
   res.redirect('/urls');
 });
-
+//////////////////////////////////////////// DONE
+//look at json information
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
-
+////////////////////////////////////////////////// Needs a redirct to login
+//Adds a page to add a new long URL / Short URL to database
+//Only users can add new links
 app.get("/urls/new", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
@@ -123,7 +130,8 @@ app.get("/urls/new", (req, res) => {
   };
   res.render("urls_new", templateVars);
 });
-
+/////////////////////////////////////////////// Needs to be GET /urls/:id?
+// WORK NEEDED
 app.post("/urls/add", (req, res) => {
   let randomString = generateRandomString();
   urlDatabase[randomString] = {
@@ -133,7 +141,7 @@ app.post("/urls/add", (req, res) => {
   console.log(urlDatabase);
   res.redirect('/urls');
 });
-
+//////////////////////////////////////// Needs to be broken into get and post
 app.post("/register", (req, res) => {
   let tempVars = {
     response: ''
@@ -169,9 +177,7 @@ app.post("/register", (req, res) => {
   }
 
 });
-
-//req.body.password == true && req.body.email == true
-
+////////////////////////////////////////////////////// ADD SOME ERROR MESSAGES
 app.post("/urls/:id/delete", (req, res) => {
   if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
     delete urlDatabase[req.params.id];
@@ -180,7 +186,7 @@ app.post("/urls/:id/delete", (req, res) => {
     res.redirect('http://localhost:8080/urls');
   }
 });
-
+////////////////////////////////// Needs to be POST /urls/:id
 app.post("/urls/:id/update", (req, res) => {
   if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
     urlDatabase[req.params.id].longURL = req.body.longURL;
@@ -189,7 +195,7 @@ app.post("/urls/:id/update", (req, res) => {
     res.redirect('http://localhost:8080/urls');
   }
 });
-
+////////////////////////////////////////// NEEDS TO DO MORE STUFF
 app.post("/urls/:id", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
@@ -199,7 +205,7 @@ app.post("/urls/:id", (req, res) => {
   };
   res.render("urls_show", templateVars);
 });
-
+//////////////////////////////////////////// ADD ERROR MESSAGE ON ELSE
 app.get("/u/:shortURL", (req, res) => {
   if (Object.keys(urlDatabase).indexOf(req.params.shortURL) > -1) {
     res.redirect(urlDatabase[req.params.shortURL].longURL);
@@ -208,7 +214,8 @@ app.get("/u/:shortURL", (req, res) => {
   }
 
 });
-
+///////////////////////////////////////////////////
+//function that generates a 6 string of a random alphanumeric value
 function generateRandomString() {
   let text = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -218,5 +225,3 @@ function generateRandomString() {
 
   return text;
 }
-
-//<%='/urls/' + x + '/delete'%>
