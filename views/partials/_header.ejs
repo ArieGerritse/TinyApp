@@ -1,5 +1,5 @@
 <!-- views/partials/_headers.ejs -->
-<% if(user_id === undefined){%>
+<% if(user_id === undefined || user_id === null){%>
   <span>
 <br>
 <form action="/login" method="POST" style="display:inline;">

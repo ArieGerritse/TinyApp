@@ -56,7 +56,11 @@ app.listen(PORT, () => {
 });
 
 app.get("/", (req, res) => {
-  res.render("urls_test");
+  if (req.session.user_id === undefined) {
+    res.redirect('/login');
+  } else {
+    res.redirect('/urls');
+  }
 });
 
 app.get("/urls", (req, res) => {
@@ -102,7 +106,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  req.session = null;
+  req.session.user_id = undefined;
   res.redirect('/urls');
 });
 

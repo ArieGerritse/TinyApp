@@ -15,7 +15,7 @@
           <% if(user_id === urls[x].poster){%>
             <li>
               <%= `${x} ` %>
-                <a href=<%=urls[x].longURL%>><%=urls[x].longURL%></a>
+                <a href=<%=`/u/${x}`%>><%=urls[x].longURL%></a>
             </li>
             <br>
             <form method="POST" action=<%='/urls/' + x + '/delete'%>>
@@ -27,10 +27,10 @@
             </form>
             <br>
             <%};%>
-              <% if(user_id === undefined){%>
+              <% if(user_id === undefined || user_id === null){%>
                 <li>
                   <%= `${x} ` %>
-                    <a href=<%=urls[x].longURL%>><%=urls[x].longURL%></a>
+                    <a href=<%=`/u/${x}`%>><%=urls[x].longURL%></a>
                 </li>
                 <br>
                 <br>
