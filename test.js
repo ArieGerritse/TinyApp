@@ -1,24 +1,10 @@
-var bcrypt = require('bcrypt');
-const saltRounds = 10;
-const myPlaintextPassword = 's0/\/\P4$$w0rD';
-const someOtherPlaintextPassword = 'not_bacon';
+var b = 'key1';
+var c = 'second';
+var longURL = 'wefwefwe';
 
-const obj = {
-  name: '12312321',
-  name2: '12312321',
-  name3: '21321',
-  name4: '21312321'
-};
+let obj = {};
 
-bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-  // Store hash in your password DB.
-  console.log(hash);
-});
 
-for (var keys in obj) {
-  console.log(keys);
-}
+obj[c] = [b] = longURL;
 
 console.log(obj);
-
-// console.log(Object.keys(obj)[3]);
