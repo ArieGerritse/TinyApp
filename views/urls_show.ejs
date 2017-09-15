@@ -10,13 +10,21 @@
   <main>
     <br>
     <br>
-    <h1><%= `ShortURL: ${shortURL}`%></h1>
-    <br>
-    <form action=<%='/urls/' + shortURL + '/update'%> method="POST" style=display:inline>
-      <label for="longURL">Enter a updated URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-      <input type="submit" value="Update">
-    </form>
+    <% if(user_id === urls[shortURL].poster){%>
+      <h1><%= `ShortURL: ${shortURL}`%></h1>
+      <br>
+      <form action=<%='/urls/' + shortURL + '/update'%> method="POST" style=display:inline>
+        <label for="longURL">Enter a updated URL:</label>
+        <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
+        <input type="submit" value="Update">
+      </form>
+      <%}else if(user_id === undefined){%>
+        <h1><%= `ShortURL: ${shortURL}`%></h1>
+        <h2>This ShortLink was added by a user, and is unable to be edited! Please login or register!</h2>
+        <%}else{%>
+          <h1><%= `ShortURL: ${shortURL}`%></h1>
+          <h2>This ShortLink was added by another user, and is unable to be edited!</h2>
+          <%};%>
   </main>
   <br>
   <br>

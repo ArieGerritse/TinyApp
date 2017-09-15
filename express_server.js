@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 var express = require('express');
 var cookieParser = require('cookie-parser');
 
+
 var app = express();
 app.use(cookieParser());
 
@@ -15,8 +16,14 @@ app.use(bodyParser.urlencoded({
 app.set("view engine", "ejs");
 
 let urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    longURL: "http://www.lighthouselabs.ca",
+    poster: '9hs5xK'
+  },
+  "9sm5xK": {
+    longURL: "http://www.google.com",
+    poster: 'Vn2b2x'
+  }
 };
 
 const users = {
@@ -29,6 +36,11 @@ const users = {
     id: 'Vn2b2x',
     email: 'gmail@gmail.com',
     password: 'password'
+  },
+  'Vn2222': {
+    id: 'Vn2222',
+    email: 'g@g',
+    password: 'q'
   }
 };
 
@@ -46,11 +58,6 @@ app.get("/urls", (req, res) => {
     usersInfo: users,
     user_id: req.cookies.user_id
   };
-  let randomString = generateRandomString();
-  var linkName = "Go to your link!";
-  if (req.body.longURL) {
-    urlDatabase[randomString] = req.body.longURL;
-  }
   res.render("urls_index", templateVars);
 });
 app.post("/login", (req, res) => {
@@ -106,6 +113,16 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+app.post("/urls/add", (req, res) => {
+  let randomString = generateRandomString();
+  urlDatabase[randomString] = {
+    longURL: req.body.longURL,
+    poster: req.cookies.user_id
+  };
+  console.log(urlDatabase);
+  res.redirect('/urls');
+});
+
 app.post("/register", (req, res) => {
   let tempVars = {
     response: ''
@@ -114,9 +131,8 @@ app.post("/register", (req, res) => {
   if (req.body.password != undefined && req.body.email != undefined && req.body.password != '') {
     Object.keys(users).forEach(function(element) {
       if (users[element].email === req.body.email) {
-        console.log(element);
-        console.log(users[element].email + ' ' + req.body.email);
         tempVars.response = 'That email has already been registered.';
+        res.render("urls_reg", tempVars);
       }
     });
     if (tempVars.response != 'That email has already been registered.') {
@@ -156,7 +172,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.post("/urls/:id/update", (req, res) => {
   if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
-    urlDatabase[req.params.id] = req.body.longURL;
+    urlDatabase[req.params.id].longURL = req.body.longURL;
     res.redirect('http://localhost:8080/urls');
   } else {
     res.redirect('http://localhost:8080/urls');
@@ -175,9 +191,9 @@ app.post("/urls/:id", (req, res) => {
 
 app.get("/u/:shortURL", (req, res) => {
   if (Object.keys(urlDatabase).indexOf(req.params.shortURL) > -1) {
-    res.redirect(urlDatabase[req.params.shortURL]);
+    res.redirect(urlDatabase[req.params.shortURL].longURL);
   } else {
-    res.redirect('http://localhost:8080/urls/new');
+    res.redirect('/urls/new');
   }
 
 });

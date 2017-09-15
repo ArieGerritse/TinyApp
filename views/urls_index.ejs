@@ -12,20 +12,30 @@
       <h1>The URL's and thier short forms</h1>
       <ul>
         <% for(x in urls){%>
-          <li>
-            <%= `${x} ` %>
-              <a href=<%=urls[x]%>><%=urls[x]%></a>
-          </li>
-          <br>
-          <form method="POST" action=<%='/urls/' + x + '/delete'%>>
-            <button class="button " style="vertical-align:middle "><span>Delete </span></button>
-          </form>
-          <br>
-          <form method="POST" action=<%='/urls/' + x%>>
-            <button class="button " style=display:inline><span>Update </span></button>
-          </form>
-          <br>
-          <%};%>
+          <% if(user_id === urls[x].poster){%>
+            <li>
+              <%= `${x} ` %>
+                <a href=<%=urls[x].longURL%>><%=urls[x].longURL%></a>
+            </li>
+            <br>
+            <form method="POST" action=<%='/urls/' + x + '/delete'%>>
+              <button class="button " style="vertical-align:middle "><span>Delete </span></button>
+            </form>
+            <br>
+            <form method="POST" action=<%='/urls/' + x%>>
+              <button class="button " style=display:inline><span>Update </span></button>
+            </form>
+            <br>
+            <%};%>
+              <% if(user_id === undefined){%>
+                <li>
+                  <%= `${x} ` %>
+                    <a href=<%=urls[x].longURL%>><%=urls[x].longURL%></a>
+                </li>
+                <br>
+                <br>
+                <%};%>
+                  <%};%>
       </ul>
     </div>
     <a href="/urls/new">Add New Short Link</a>
