@@ -32,7 +32,8 @@ let urlDatabase = {
     poster: 'Vn2b2x'
   }
 };
-
+////////////////////////////////////////////////////////////
+//Database of registered users with ID, Email, and a encryted password
 const users = {
   '9hs5xK': {
     id: '9hs5xK',
@@ -72,7 +73,7 @@ app.get("/urls", (req, res) => {
   };
   res.render("urls_index", templateVars);
 });
-////////////////////////////////// Needs a redirect if logged in, and split into GET AND POST
+/////////////////// Needs a redirect if logged in, and split into GET AND POST
 app.post("/login", (req, res) => {
   let tempVars = {
     response: ''
