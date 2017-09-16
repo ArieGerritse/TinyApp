@@ -166,11 +166,11 @@ app.post("/login", (req, res) => {
         req.session.user_id = element;
         res.redirect('/urls');
       }
-      if (Object.keys(users).length === 0) {
-        tempVars.response = 'Not a valid username or password';
-        res.render("urls_login", tempVars);
-      }
     });
+    if (req.session.user_id === undefined) {
+      tempVars.response = 'Not a valid username or password';
+      res.render("urls_login", tempVars);
+    }
   } else if (req.body.email === '' && req.body.email === '') {
     tempVars.response = 'Please enter a email and password';
     res.render("urls_login", tempVars);
@@ -230,6 +230,7 @@ app.post("/register", (req, res) => {
   } else {
     res.render("urls_reg", tempVars);
   }
+
 
   //If logged in, redirect to main page
 
