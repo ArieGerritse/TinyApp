@@ -12,7 +12,7 @@
       <h1>The URL's and thier short forms</h1>
       <ul>
         <% for(x in urls){%>
-          <% if(user_id === urls[x].poster){%>
+          <% if(user_id !== undefined){%>
             <li>
               <%= `${x} ` %>
                 <a href=<%=`/u/${x}`%>><%=urls[x].longURL%></a>
