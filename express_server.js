@@ -160,19 +160,16 @@ app.post("/login", (req, res) => {
   };
 
   if (req.body.password != undefined && req.body.email != undefined && req.body.password != '') {
-    let i = 1;
     //Checks email and password against users object for validity
     Object.keys(users).forEach(function(element) {
       if (users[element].email === req.body.email && bcrypt.compareSync(req.body.password, users[element].password) === true) {
         req.session.user_id = element;
         res.redirect('/urls');
-        i = 0;
       }
-      if (Object.keys(users).length === i) {
+      if (Object.keys(users).length === 0) {
         tempVars.response = 'Not a valid username or password';
         res.render("urls_login", tempVars);
       }
-      i++;
     });
   } else if (req.body.email === '' && req.body.email === '') {
     tempVars.response = 'Please enter a email and password';
@@ -183,14 +180,13 @@ app.post("/login", (req, res) => {
   } else if (req.body.password === '') {
     tempVars.response = 'Please enter a valid password';
     res.render("urls_login", tempVars);
+  } else if (req.session.user_id !== undefined) {
+    res.redirect('/urls');
   } else {
     res.render("urls_login", tempVars);
   }
 
   //If logged in, redirect to main page
-  if (req.session.user_id !== undefined) {
-    res.redirect('/urls');
-  }
 });
 //////////////////////////////////////// Needs to be broken into get and post
 app.post("/register", (req, res) => {
@@ -228,14 +224,14 @@ app.post("/register", (req, res) => {
   } else if (req.body.password === '') {
     tempVars.response = 'Please enter a valid password';
     res.render("urls_reg", tempVars);
+    //If logged in, redirect to main page
+  } else if (req.session.user_id !== undefined) {
+    res.redirect('/urls');
   } else {
     res.render("urls_reg", tempVars);
   }
 
   //If logged in, redirect to main page
-  if (req.session.user_id !== undefined) {
-    res.redirect('/urls');
-  }
 
 });
 //////////////////////////////////////////// DONE
