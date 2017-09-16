@@ -249,7 +249,6 @@ app.post("/logout", (req, res) => {
 // Deletes the URL's if it is the user that created them
 app.post("/urls/:id/delete", (req, res) => {
 
-  console.log(req.params.id);
   if (req.session.user_id === undefined) {
     setTimeout(function() {
       res.send('You do not have premission to delete that, will now redirect to main page');
