@@ -64,6 +64,7 @@ app.get("/urls.json", (req, res) => {
 ///////////////////////////////////////////////////////////// DONE
 //Base of tiny app, if logged in redirects to /urls, if not redirects to /login
 app.get("/", (req, res) => {
+
   if (req.session.user_id === undefined) {
     res.redirect('/login');
   } else {
@@ -109,6 +110,17 @@ app.get("/urls/new", (req, res) => {
     res.render("urls_new", templateVars);
   }
 });
+
+app.get("/urls/:id", (req, res) => {
+  let templateVars = {
+    urls: urlDatabase,
+    shortURL: req.params.id,
+    user_id: req.session.user_id,
+    usersInfo: users
+  };
+
+  res.render("urls_show", templateVars);
+});
 /////////////////////////////////////////////// DONE
 // Adds the new URL to the databasse with poster info / short URL / long URL
 app.post("/urls", (req, res) => {
@@ -120,7 +132,7 @@ app.post("/urls", (req, res) => {
   res.redirect('/urls');
 });
 //////////////////////////////////////////// Done
-//
+//Rediects to the long url of the short url that is sent to it
 app.get("/u/:shortURL", (req, res) => {
   if (Object.keys(urlDatabase).indexOf(req.params.shortURL) > -1) {
     res.redirect(urlDatabase[req.params.shortURL].longURL);
@@ -131,15 +143,17 @@ app.get("/u/:shortURL", (req, res) => {
 });
 ////////////////////////////////////////// NEEDS TO DO MORE STUFF
 app.post("/urls/:id", (req, res) => {
-  let templateVars = {
-    urls: urlDatabase,
-    shortURL: req.params.id,
-    user_id: req.session.user_id,
-    usersInfo: users
-  };
-  res.render("urls_show", templateVars);
+
+  if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
+    urlDatabase[req.params.id].longURL = req.body.longURL;
+    res.redirect('/urls');
+  } else {
+    res.redirect('/urls');
+  }
+
 });
-////////////////////////////////// Needs a redirect if logged in, and split into GET AND POST
+////////////////////////////////// DONE
+//Logs the user in by checking input from user object to verify if already registered
 app.post("/login", (req, res) => {
   let tempVars = {
     response: ''
@@ -147,6 +161,7 @@ app.post("/login", (req, res) => {
 
   if (req.body.password != undefined && req.body.email != undefined && req.body.password != '') {
     let i = 1;
+    //Checks email and password against users object for validity
     Object.keys(users).forEach(function(element) {
       if (users[element].email === req.body.email && bcrypt.compareSync(req.body.password, users[element].password) === true) {
         req.session.user_id = element;
@@ -170,6 +185,11 @@ app.post("/login", (req, res) => {
     res.render("urls_login", tempVars);
   } else {
     res.render("urls_login", tempVars);
+  }
+
+  //If logged in, redirect to main page
+  if (req.session.user_id !== undefined) {
+    res.redirect('/urls');
   }
 });
 //////////////////////////////////////// Needs to be broken into get and post
@@ -198,6 +218,8 @@ app.post("/register", (req, res) => {
       req.session.user_id = randomString;
       res.redirect('/urls');
     }
+
+    //Checks which text field has errors and sends an error in response
   } else if (req.body.email === '' && req.body.email === '') {
     res.render("urls_reg", tempVars);
   } else if (req.body.email === '') {
@@ -210,6 +232,11 @@ app.post("/register", (req, res) => {
     res.render("urls_reg", tempVars);
   }
 
+  //If logged in, redirect to main page
+  if (req.session.user_id !== undefined) {
+    res.redirect('/urls');
+  }
+
 });
 //////////////////////////////////////////// DONE
 //Logout function, deletes user_id cookie (not all in case i want to do the
@@ -220,20 +247,26 @@ app.post("/logout", (req, res) => {
 });
 ////////////////////////////////////////////////////// ADD SOME ERROR MESSAGES
 app.post("/urls/:id/delete", (req, res) => {
-  if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
-    delete urlDatabase[req.params.id];
-    res.redirect('http://localhost:8080/urls');
+
+  console.log(req.params.id);
+  if (req.session.user_id === undefined) {
+    setTimeout(function() {
+      res.send('You do not have premission to delete that, will now redirect to main page');
+    }, 5000);
+    res.redirect('urls');
+  } else if (urlDatabase[req.params.id].poster !== req.session.user_id) {
+    setTimeout(function() {
+      res.send('You do not have premission to delete that, will now redirect to main page');
+    }, 5000);
+    res.redirect('urls');
   } else {
-    res.redirect('http://localhost:8080/urls');
-  }
-});
-////////////////////////////////// Needs to be POST /urls/:id
-app.post("/urls/:id/update", (req, res) => {
-  if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
-    urlDatabase[req.params.id].longURL = req.body.longURL;
-    res.redirect('/urls');
-  } else {
-    res.redirect('/urls');
+    //Checks to make sure the short URL / long URL combo exist
+    if (Object.keys(urlDatabase).indexOf(req.params.id) > -1) {
+      delete urlDatabase[req.params.id];
+      res.redirect('/urls');
+    } else {
+      res.redirect('/urls');
+    }
   }
 });
 ///////////////////////////////////////////////////
