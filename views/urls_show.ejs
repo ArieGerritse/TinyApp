@@ -4,6 +4,68 @@
 <head>
   <title>TinyApp</title>
   <%- include('partials/_header') %>
+    <style>
+    body {
+      background-color: #B22B00;
+    }
+
+
+    .button {
+      display: inline-block;
+      border-radius: 4px;
+      background-color: #00FFF2;
+      border: none;
+      color: #000000;
+      text-align: center;
+      font-size: 16px;
+      padding: 20px;
+      width: 100px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .button span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button span:after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .button:hover span {
+      padding-right: 25px;
+    }
+
+    .button:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+
+    input[type=url]:focus {
+      background-color: lightblue;
+    }
+
+    input[type=button],
+    input[type=submit],
+    input[type=reset] {
+      background-color: #00FFF2;
+      border: none;
+      color: black;
+      padding: 16px 32px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    </style>
 </head>
 
 <body>
@@ -14,7 +76,8 @@
       <h1><%= `ShortURL: ${shortURL}`%></h1>
       <br>
       <form action=<%='/urls/' + shortURL %> method="POST" style=display:inline>
-        <label for="longURL">Enter a updated URL:</label>
+        <label for="longURL">
+          <font size="5"><b>Enter a updated URL:</label>
         <input id="longURL" type="url" name="longURL" placeholder="http://" style="width: 300px">
         <input type="submit" value="Update">
       </form>
@@ -33,7 +96,8 @@
   </main>
   <br>
   <br>
-  <a href="/urls">Home</a>
+  <a href="/urls">
+    <font size="7">Home</a>
 </body>
 
 </html>

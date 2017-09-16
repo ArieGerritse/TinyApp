@@ -4,6 +4,68 @@
 <head>
   <title>TinyApp</title>
   <%- include('partials/_header') %>
+    <style>
+    body {
+      background-color: #B22B00;
+    }
+
+
+    .button {
+      display: inline-block;
+      border-radius: 4px;
+      background-color: #00FFF2;
+      border: none;
+      color: #000000;
+      text-align: center;
+      font-size: 16px;
+      padding: 20px;
+      width: 100px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .button span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button span:after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .button:hover span {
+      padding-right: 25px;
+    }
+
+    .button:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+
+    input[type=url]:focus {
+      background-color: lightblue;
+    }
+
+    input[type=button],
+    input[type=submit],
+    input[type=reset] {
+      background-color: #00FFF2;
+      border: none;
+      color: black;
+      padding: 16px 32px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    </style>
 </head>
 
 <body>
@@ -14,8 +76,9 @@
         <% for(x in urls){%>
           <% if(user_id !== undefined){%>
             <li>
-              <%= `${x} ` %>
-                <a href=<%=`/u/${x}`%>><%=urls[x].longURL%></a>
+              <font size="5">
+                <%= `${x} ` %>
+                  <a href=<%=`/u/${x}`%>><%=urls[x].longURL%></a>
             </li>
             <br>
             <form method="POST" action=<%='/urls/' + x + '/delete'%>>
@@ -29,8 +92,9 @@
             <%};%>
               <% if(user_id === undefined || user_id === null){%>
                 <li>
-                  <%= `${x} ` %>
-                    <a href=<%=`/u/${x}`%>><%=urls[x].longURL%></a>
+                  <font size="5">
+                    <%= `${x} ` %>
+                      <a href=<%=`/u/${x}`%>><%=urls[x].longURL%></a>
                 </li>
                 <br>
                 <br>
@@ -38,7 +102,9 @@
                   <%};%>
       </ul>
     </div>
-    <a href="/urls/new">Add New Short Link</a>
+    <% if(user_id !== undefined){ %>
+      <a href="/urls/new">Add New Short Link</a>
+      <%}%>
   </main>
   <!-- Add your EJS code here -->
 </body>

@@ -34,7 +34,7 @@ let urlDatabase = {
   }
 };
 /////////////////////////////////////////////
-//Database of the
+//Database of the users as an object
 const users = {
   '9hs5xK': {
     id: '9hs5xK',
@@ -245,7 +245,8 @@ app.post("/logout", (req, res) => {
   req.session.user_id = undefined;
   res.redirect('/urls');
 });
-////////////////////////////////////////////////////// ADD SOME ERROR MESSAGES
+////////////////////////////////////////////////////// DONE
+// Deletes the URL's if it is the user that created them
 app.post("/urls/:id/delete", (req, res) => {
 
   console.log(req.params.id);
