@@ -2,7 +2,6 @@ var express = require("express");
 var app = express();
 var PORT = process.env.PORT || 8080;
 const bodyParser = require("body-parser");
-var express = require('express');
 var cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 var cookieSession = require('cookie-session');
@@ -151,6 +150,14 @@ app.post("/urls/:id", (req, res) => {
     res.redirect('/urls');
   }
 
+});
+/////////////////////////////////////DONE
+app.get("/login", (req, res) => {
+  let tempVars = {
+    response: ''
+  };
+
+  res.render("urls_login", tempVars);
 });
 ////////////////////////////////// DONE
 //Logs the user in by checking input from user object to verify if already registered
